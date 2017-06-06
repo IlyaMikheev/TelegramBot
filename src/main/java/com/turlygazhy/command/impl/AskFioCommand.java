@@ -79,6 +79,7 @@ public class AskFioCommand extends Command {
         return dialogCounter < dialog.size();
     }
     private Message message;
+    //
 
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
