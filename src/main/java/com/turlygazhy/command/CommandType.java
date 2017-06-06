@@ -32,7 +32,8 @@ public enum CommandType {
     SHOW_ALL_THESIS(24),
     SHOW_CHART(25),
     CHANGE_GOAL(26),
-    ORDER_CAKE(27);
+    ORDER_CAKE(27),
+    ASK_FIO(28);
 
     private final int id;
 

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class CommandService extends Service {
 
     public Command getCommand(String text) throws SQLException, CommandNotFoundException {
+
         if (text != null) {
             String[] split = text.split(":");
             String s = split[0];
@@ -36,6 +37,7 @@ public class CommandService extends Service {
                 return new DeclineGroupCommand(Long.parseLong(split[1]));
             }
         }
+
 
         Button button = buttonDao.getButton(text);
         return commandDao.getCommand(button.getCommandId());

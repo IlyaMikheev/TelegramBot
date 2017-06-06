@@ -64,6 +64,8 @@ public class CommandFactory {
                 return new KeyWordsCommand();
             case SEARCH:
                 return new SearchCommand();
+            case ASK_FIO:
+                return new AskFioCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }
