@@ -96,6 +96,7 @@ public class ConnectionPool {
     public static void initBase()  {
         PreparedStatement ps = null;
 
+
         try {
             ps = connection.prepareStatement("CREATE TABLE if not exists PUBLIC.BUTTON(" +
                     "id INT," +
@@ -216,6 +217,93 @@ public class ConnectionPool {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+/*
+        try {
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(id, text, photo, keyboard) VALUES(?, ?, ?, ?);");
+            ps.setLong(1,101L);
+            ps.setString(2,"Ваша фамилия?");
+            ps.setString(3,"photo_id");
+            ps.setLong(4,1L);
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(id, text, photo, keyboard) VALUES(?, ?, ?, ?);");
+            ps.setLong(1,102L);
+            ps.setString(2,"Ваше имя?");
+            ps.setString(3,"photo_id");
+            ps.setLong(4,1L);
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(id, text, photo, keyboard) VALUES(?, ?, ?, ?);");
+            ps.setLong(1,103L);
+            ps.setString(2,"Ваше отчество?");
+            ps.setString(3,"photo_id");
+            ps.setLong(4,1L);
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(id, text, photo, keyboard) VALUES(?, ?, ?, ?);");
+            ps.setLong(1,104L);
+            ps.setString(2,"Ваше номер телефона?");
+            ps.setString(3,"photo_id");
+            ps.setLong(4,1L);
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("CREATE TABLE if not exists KEYBOARD(" +
+                    "id BIGINT," +
+                    "any_text TEXT," +
+                    "any_bool BOOLEAN);");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO KEYBOARD(id, any_text, any_bool) VALUES(?, ?, ?);");
+            ps.setLong(1,1L);
+            ps.setString(2,"keyboard");
+            ps.setBoolean(3,false);
+            ps.execute();
+
+            ps = connection.prepareStatement("INSERT INTO KEYBOARD(id, any_text, any_bool) VALUES(?, ?, ?);");
+            ps.setLong(1,2L);
+            ps.setString(2,"keyboard");
+            ps.setBoolean(3,false);
+            ps.execute();
+
+            ps = connection.prepareStatement("INSERT INTO KEYBOARD(id, any_text, any_bool) VALUES(?, ?, ?);");
+            ps.setLong(1,3L);
+            ps.setString(2,"keyboard");
+            ps.setBoolean(3,false);
+            ps.execute();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+*/
+
+
+
 
     }
 }

@@ -2,6 +2,7 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
+import com.turlygazhy.entity.WaitingType;
 import org.telegram.telegrambots.api.methods.send.SendContact;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 public class AskFioCommand extends Command {
 
+    private WaitingType waitingType;
     private int dialogCounter;
     public ArrayList<Item> dialog = new ArrayList<Item>();
 
@@ -71,6 +73,8 @@ public class AskFioCommand extends Command {
         dialog.get(dialogCounter - 1).unswer = unswer;
     }
 
+    public void setUnswer(int counter, String unswer) {  dialog.get(counter).unswer = unswer; }
+
     public int size(){
         return dialog.size();
     }
@@ -79,7 +83,7 @@ public class AskFioCommand extends Command {
         return dialogCounter < dialog.size();
     }
     private Message message;
-    //
+    /*
 
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
@@ -109,6 +113,46 @@ public class AskFioCommand extends Command {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+*/
+    @Override
+    public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
+
+        message = update.getMessage();
+        if (message == null) {
+            message = update.getCallbackQuery().getMessage();
+        }
+        Long chatId = message.getChatId();
+        // Бот получает первое сообщение "Ввод персональнх данных" Запоминать еще нечего, witingType == null;
+        if (waitingType == null) {
+            sendMessage("Ваша фамилия?", chatId, bot); // Задаём первый вопрос - запрашиваем Фамилию
+            waitingType = WaitingType.GOAL_NAME;     // Пусть GOAL_NAME соответствует второму шагу (первому в switch)
+            return false;
+        }
+
+        switch (waitingType) {
+            case GOAL_NAME:
+                setUnswer(0, message.getText()); // Запись фамилии
+                sendMessage("Ваше имя?", chatId, bot); // Запрос имени
+                waitingType = WaitingType.GOAL_NEW_NAME; // Опять же знаяение WaitingType выбрано случайно
+                return false;
+            case GOAL_NEW_NAME:
+                setUnswer(1, message.getText()); // Запись имени
+                sendMessage("Ваше отчество?", chatId, bot); // Запрос отчества
+                waitingType = WaitingType.NAVIKI;
+                return false;
+            case NAVIKI:
+                setUnswer(2, message.getText()); // Запись отчества
+                sendMessage("Ваш номер телефона?", chatId, bot); // Запрос номера телефона
+                waitingType = WaitingType.CONTACT;
+                return false;
+            case CONTACT:
+                setUnswer(3, message.getText()); // Запись номера телефона
+                sendFinalMessage(bot, message);
+                return true;
+        }
+
         return false;
     }
 
