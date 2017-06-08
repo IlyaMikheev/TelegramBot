@@ -17,6 +17,7 @@ public class Main {
         logger.info("ApiContextInitializer.init()");
         ApiContextInitializer.init();
 
+
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         Bot bot = new Bot();
 

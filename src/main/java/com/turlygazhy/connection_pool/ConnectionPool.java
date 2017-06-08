@@ -1,10 +1,12 @@
 package com.turlygazhy.connection_pool;
 
+import com.turlygazhy.entity.Button;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -47,6 +49,7 @@ public class ConnectionPool {
             logger.info("SQLException.");
             throw new ConnectionPoolException(e);
         }
+        System.out.println("Этот кусок кода был выполнен");
 
     }
 
@@ -67,6 +70,9 @@ public class ConnectionPool {
 
         //the case when there is no free connection
         if (connection == null) throw new ConnectionPoolException("Connection is null");
+
+        initBase();
+
         return connection;
     }
 
@@ -85,5 +91,131 @@ public class ConnectionPool {
             logger.info("InterruptedException.");
             throw new ConnectionPoolException("cannot put connection in pool");
         }
+    }
+
+    public static void initBase()  {
+        PreparedStatement ps = null;
+
+        try {
+            ps = connection.prepareStatement("CREATE TABLE if not exists PUBLIC.BUTTON(" +
+                    "id INT," +
+                    "text TEXT," +
+                    "id_command INT," +
+                    "any_text TEXT," +
+                    "any_boolean boolean);");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        int idParameterIndex = 1;
+        int commandTypeIdColumnIndex = 2;
+        int messageToUserColumnIndex = 3;
+        int messageIdForChangingColumnIndex = 4;
+        int listNameColumnIndex = 5;
+
+        try {
+            ps = connection.prepareStatement("CREATE TABLE if not exists PUBLIC.COMMAND(" +
+                    "id BIGINT," +
+                    "commandTypeId BIGINT," +
+                    "messageToUser BIGINT," +
+                    "messageIdForChanging BIGINT," +
+                    "listName BIGINT);");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement(
+                    "INSERT INTO PUBLIC.COMMAND(id, commandTypeId, messageToUser, messageIdForChanging, listName)" +
+                            "VALUES(?, ?, ?, ?, ?);");
+            ps.setLong(1,28L);
+            ps.setLong(2,28L);
+            ps.setLong(3,28L);
+            ps.setLong(4,28L);
+            ps.setLong(5,28L);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement(
+                    "INSERT INTO PUBLIC.BUTTON(id, text, id_command, any_text, any_boolean) VALUES(?,?,?,?,?);");
+
+            ps.setInt(1,22);
+            ps.setString(2,"any_text_1");
+            ps.setInt(3,10);
+            ps.setString(4,"any_text2");
+            ps.setBoolean(5, false);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement(
+                    "INSERT INTO PUBLIC.BUTTON(id, text, id_command, any_text, any_boolean) VALUES(?,?,?,?,?);");
+
+            ps.setInt(1,23);
+            ps.setString(2,"any_text_1");
+            ps.setInt(3,10);
+            ps.setString(4,"any_text2");
+            ps.setBoolean(5, false);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement(
+                    "INSERT INTO PUBLIC.BUTTON(id, text, id_command, any_text, any_boolean) VALUES(?,?,?,?,?);");
+
+            ps.setInt(1,28);
+            ps.setString(2,"Ввод персональных данных");
+            ps.setInt(3,28);
+            ps.setString(4,"any_text2");
+            ps.setBoolean(5, false);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            ps = connection.prepareStatement("DROP TABLE MESSAGE;");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ps = connection.prepareStatement("CREATE TABLE if not exists MESSAGE(" +
+                    "id BIGINT," +
+                    "text TEXT," +
+                    "photo TEXT," +
+                    "keyboard BIGINT);");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String message7 = "Привет, я робот. Я могу выполнить следующие команды: \n" +
+                "1. Ввод персональных данных";
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(id, text, photo, keyboard) VALUES(?, ?, ?, ?);");
+            ps.setLong(1,7L);
+            ps.setString(2,message7);
+            ps.setString(3,"photo_id");
+            ps.setLong(4,1L);
+            ps.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

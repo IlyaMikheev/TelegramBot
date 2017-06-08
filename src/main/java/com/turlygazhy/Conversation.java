@@ -36,10 +36,10 @@ public class Conversation {
         if (updateMessage == null) {
             inputtedText = update.getCallbackQuery().getData();
             updateMessage = update.getCallbackQuery().getMessage();
+
         } else {
             inputtedText = updateMessage.getText();
         }
-
         try {
             command = commandService.getCommand(inputtedText);
         } catch (CommandNotFoundException e) {
@@ -50,7 +50,7 @@ public class Conversation {
                 Message message = messageDao.getMessage(7);
                 SendMessage sendMessage = message.getSendMessage();
                 sendMessage.setChatId(update.getMessage().getChatId());
-                sendMessage.setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+                //sendMessage.setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
                 bot.sendMessage(sendMessage);
                 return;
             }

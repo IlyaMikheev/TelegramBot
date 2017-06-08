@@ -6,6 +6,7 @@ import com.turlygazhy.dao.impl.KeyWordDao;
 import com.turlygazhy.dao.impl.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -39,6 +40,7 @@ public class Bot extends TelegramLongPollingBot {
             }
             return;
         }
+
         Conversation conversation = getConversation(update);
         try {
             conversation.handleUpdate(update, this);
@@ -68,10 +70,24 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return "Pizza Astana";
+        return "Ilia_Mickeev_s_personal_bot";
     }
 
     public String getBotToken() {
-        return "359699755:AAGEJ2xR8XthESiyDtko8xiTMjx8WpaRDNk";
+        return "382278947:AAGXjFXGLP1thpih6tUCBimZ8O6jVAtHLD0";
+    }
+
+    private void sendMsg(Message message, String text) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setText(text);
+        try {
+            sendMessage(sendMessage);
+
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
