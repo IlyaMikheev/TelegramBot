@@ -1,0 +1,9 @@
+<application>
+  <component name="ParameterNameHintsSettings">
+    <blacklists>
+      <blacklist language="Java">
+        <added pattern="java.sql.Connection.prepareStatement(sql)" />
+      </blacklist>
+    </blacklists>
+  </component>
+</application>
